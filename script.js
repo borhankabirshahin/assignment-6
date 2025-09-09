@@ -10,7 +10,7 @@ const modalBody = document.getElementById("modalBody");
 const showLoading = (container) => {
   container.innerHTML = `
     <div class="flex justify-center py-10 w-full col-span-3">
-      <span class="loading loading-spinner loading-lg"></span>
+      <span class="loading loading-dots loading-lg"></span>
     </div>
   `;
 };
@@ -149,8 +149,8 @@ const loadPlantDetails = async (id) => {
     }
 
     modalBody.innerHTML = `
+    <h2 class="text-2xl text-center font-bold mt-3">${plant.name}</h2>
       <img src="${plant.image}" class="w-full h-60 object-cover rounded-lg" />
-      <h2 class="text-2xl font-bold mt-3">${plant.name}</h2>
       <p class="text-sm opacity-70">${
         plant.description || "No description available."
       }</p>
@@ -169,6 +169,8 @@ let cart = [];
 const addToCart = (name, price) => {
   cart.push({ name, price });
   updateCart();
+  // Alert show
+  alert(`${name} has been added to your cart!`);
 };
 
 const removeFromCart = (index) => {
