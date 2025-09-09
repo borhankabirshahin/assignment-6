@@ -83,15 +83,20 @@
         <div><img src="assets/hero-leaf2.png" alt="" /></div>
       </section>
     </header>
-    <div class="main-container bg-[#F0FDF4]">
+    <div class="main-container mx-auto bg-[#F0FDF4]">
       <h1 class="font-semibold text-[32px] text-center pt-[100px]">
         Choose Your Trees
       </h1>
-      <div class="container w-full p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
+      <div class="w-full p-6 grid grid-cols-1 md:grid-cols-5 gap-6">
         <!-- Left Sidebar: Categories -->
         <aside class="md:col-span-1">
-          <h2 class="text-[20px] font-semibold mb-4">Categories</h2>
-          <div id="category-container" class="space-y-3"></div>
+          <h2 class="text-[20px] font-semibold mb-4 text-center md:text-left">
+            Categories
+          </h2>
+          <div
+            id="category-container"
+            class="space-y-3 grid grid-cols-2 gap-x-6 md:grid-cols-1"
+          ></div>
         </aside>
 
         <!--Plants -->
@@ -115,6 +120,19 @@
           </p>
         </aside>
       </div>
+      <!-- Plants Details Modal -->
+      <dialog id="detailsModal" class="modal">
+        <div class="modal-box max-w-3xl">
+          <form method="dialog">
+            <button
+              class="btn btn-lg btn-circle bg-[#CFF0DC] absolute right-6 top-6"
+            >
+              ✕
+            </button>
+          </form>
+          <div id="modalBody" class="space-y-4"></div>
+        </div>
+      </dialog>
 
       <!-- part -2 -->
       <div class="mx-5 md:mx-[250px] pb-[100px]">

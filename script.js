@@ -3,6 +3,8 @@ const categoryContainer = document.getElementById("category-container");
 const plantsContainer = document.getElementById("plant-container");
 const cartList = document.getElementById("cart-list");
 const cartTotal = document.getElementById("cart-total");
+const modal = document.getElementById("detailsModal");
+const modalBody = document.getElementById("modalBody");
 
 //  Utility Functions
 const showLoading = (container) => {
@@ -26,7 +28,6 @@ const loadCategories = async () => {
       "https://openapi.programming-hero.com/api/categories"
     );
     const data = await res.json();
-
     displayCategories(data.categories);
   } catch (error) {
     console.log("Error loading categories:", error);
@@ -39,7 +40,7 @@ const displayCategories = (categories) => {
   // All Plants button
   const allBtn = document.createElement("button");
   allBtn.className =
-    "w-full bg-green-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-200";
+    "text-center md:text-left w-full bg-green-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-300";
   allBtn.innerText = "All Plants";
   allBtn.addEventListener("click", () => {
     setActiveButton(allBtn);
@@ -51,7 +52,7 @@ const displayCategories = (categories) => {
   categories.forEach((cat) => {
     const button = document.createElement("button");
     button.className =
-      "w-full bg-green-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-200";
+      "text-center md:text-left w-full bg-green-100 text-black font-semibold py-2 px-4 rounded-lg hover:bg-green-300";
     button.innerText = cat.category_name;
 
     button.addEventListener("click", () => {
@@ -112,7 +113,7 @@ const displayPlants = (plants) => {
       <h2 class="text-xl font-semibold text-black cursor-pointer hover:text-green-500"
           onclick="loadPlantDetails(${plant.id})">${plant.name}</h2>
       <p class="text-sm opacity-70">${
-        plant.description ? plant.description.slice(0, 55) : "No description"
+        plant.description ? plant.description.slice(0, 50) : "No description"
       }...</p>
      <div class="flex justify-between items-center">
       <p class="mt-2 font-medium text-[14px] px-3 py-1 text-[#15803D] bg-[#DCFCE7] rounded-xl"> ${
@@ -132,19 +133,34 @@ const displayPlants = (plants) => {
   });
 };
 
-// Modal (Plant Details)
+// Plant Details Function
 const loadPlantDetails = async (id) => {
   try {
     const res = await fetch(
       `https://openapi.programming-hero.com/api/plant/${id}`
     );
     const data = await res.json();
+    const plant = data.plants;
 
-    alert(
-      `Name: ${data.plant.name}\nCategory: ${data.plant.category}\nPrice: $${data.plant.price}\nDescription: ${data.plant.description}`
-    );
+    if (!plant) {
+      modalBody.innerHTML = `<p class="text-red-500">No details found for this plant.</p>`;
+      detailsModal.showModal();
+      return;
+    }
+
+    modalBody.innerHTML = `
+      <img src="${plant.image}" class="w-full h-60 object-cover rounded-lg" />
+      <h2 class="text-2xl font-bold mt-3">${plant.name}</h2>
+      <p class="text-sm opacity-70">${
+        plant.description || "No description available."
+      }</p>
+      <p class="mt-2 font-medium">Category: ${plant.category || "Unknown"}</p>
+      <p class="mt-1 font-semibold text-lg">Price: $${plant.price || 0}</p>
+    `;
+
+    detailsModal.showModal();
   } catch (error) {
-    console.log("Error loading plant details:", error);
+    console.error("Error loading plant details:", error);
   }
 };
 
@@ -175,5 +191,6 @@ const updateCart = () => {
   cartTotal.innerText = `$${total}`;
 };
 
+//  Calls
 loadCategories();
 loadPlants();
